@@ -12,16 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Task3.Interfaces;
 
-namespace Task3
+namespace WpfTask1
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ICsvFileHandler _csvFileHandler;
         public MainWindow()
         {
             InitializeComponent();
