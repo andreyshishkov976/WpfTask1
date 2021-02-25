@@ -9,7 +9,7 @@ namespace Task3.DataHandlers
 {
     class JsonSerializator : IJsonSerializator
     {
-        public void Serialize(List<Person> people)
+        public void Serialize(List<People> people)
         {
             throw new NotImplementedException();
         }

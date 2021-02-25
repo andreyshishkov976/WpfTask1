@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Task3.Models
 {
-    class PersonContext: DbContext
+    class PeopleDBContext: DbContext
     {
-        public PersonContext() : base("DefaultConnection")
+        public PeopleDBContext() : base("DefaultConnection")
         {
 
         }
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<People> People { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Task3.DataHandlers
 {
     class ExcelImporter : IExcelExporter
     {
-        public void ExcelExport(List<Person> people)
+        public void ExcelExport(List<People> people)
         {
             throw new NotImplementedException();
         }

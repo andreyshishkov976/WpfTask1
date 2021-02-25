@@ -8,6 +8,6 @@ namespace Task3.Interfaces
 {
     interface IJsonSerializator
     {
-        void Serialize(List<Person> people);
+        void Serialize(List<People> people);
     }
 }

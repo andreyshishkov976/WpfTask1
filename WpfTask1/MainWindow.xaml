@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <DataGrid x:Name="PeopleGrid" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="411"/>
+        <Button x:Name="LoadCSVButton" Content="Загрузка CSV" HorizontalAlignment="Left" Margin="426,10,0,0" VerticalAlignment="Top" Width="81" Click="LoadCSVButton_Click"/>
+        <Button x:Name="LoadDBButton" Content="Загрузка DB" HorizontalAlignment="Left" Margin="426,35,0,0" VerticalAlignment="Top" Width="81" Click="LoadDBButton_Click"/>
+
     </Grid>
 </Window>

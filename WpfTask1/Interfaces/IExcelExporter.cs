@@ -8,6 +8,6 @@ namespace Task3.Interfaces
 {
     interface IExcelExporter
     {
-        void ExcelExport(List<Person> people);
+        void ExcelExport(List<People> people);
     }
 }
