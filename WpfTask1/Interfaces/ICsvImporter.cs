@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfTask1.Models;
 
-namespace Task3.Interfaces
+namespace WpfTask1.Interfaces
 {
-    interface ICsvFileHandler
+    interface ICsvImporter<T> where T : class
     {
-        Task<ICollection<People>> DataLoaderAsync(string path);
+        Task<ICollection<T>> DataLoaderAsync(string path);
     }
 }

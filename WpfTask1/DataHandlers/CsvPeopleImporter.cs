@@ -4,17 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Task3.Interfaces;
+using WpfTask1.Interfaces;
+using WpfTask1.Models;
 
-namespace Task3
+namespace WpfTask1.DataHandlers
 {
-    class CSVfileHandler : ICsvFileHandler
+    class CSVPeopleImporter : ICsvImporter<People>
     {
         public async Task<ICollection<People>> DataLoaderAsync(string path)
         {
             var fileText = await File.OpenText(path).ReadToEndAsync();
             return fileText.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
-                .ToList().Select(v => new People(v)).ToList();
+                .Select(v => new People(v)).ToList();
         }
     }
 }

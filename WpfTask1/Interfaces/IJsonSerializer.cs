@@ -7,8 +7,8 @@ using WpfTask1.Models;
 
 namespace WpfTask1.Interfaces
 {
-    interface IExcelExporter<T> where T : class
+    interface IJsonSerializer<T> where T : class
     {
-        void ExcelExport(ICollection<T> items);
+        void Serialize(ICollection<T> people);
     }
 }
