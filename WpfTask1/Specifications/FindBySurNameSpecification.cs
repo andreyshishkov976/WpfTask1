@@ -10,16 +10,16 @@ namespace WpfTask1.Specifications
 {
     class FindBySurNameSpecification : Specification<People>
     {
-        private readonly string _city;
+        private readonly string _surName;
 
         public FindBySurNameSpecification(string surName)
         {
-            _city = surName;
+            _surName = surName;
         }
 
         public override Expression<Func<People, bool>> ToExpression()
         {
-            return people => people.SurName == _city;
+            return people => people.SurName == _surName;
         }
     }
 }

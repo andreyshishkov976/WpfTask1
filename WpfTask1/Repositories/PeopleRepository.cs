@@ -74,7 +74,6 @@ namespace WpfTask1.Repositories
         }
         public ICollection<People> Find(Specification<People> specification)
         {
-            var s = specification.ToExpression().ToString();
             return db.People.Where(specification.ToExpression()).ToList();
         }
 
