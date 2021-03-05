@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using WpfTask1.ViewModels;
 
@@ -35,6 +36,49 @@ namespace WpfTask1.Views
             //AddSurName.Text = string.Empty;
             //AddCity.Text = string.Empty;
             //AddCountry.Text = string.Empty;
+        }
+
+        private void IsEnabledSwitch(CheckBox sender, Control target)
+        {
+            switch (sender.IsChecked)
+            {
+                case true:
+                    target.IsEnabled = true;
+                    break;
+                default:
+                    target.IsEnabled = false;
+                    break;
+            }
+        }
+
+        private void FilterByDateSwitch(object sender, RoutedEventArgs e)
+        {
+            IsEnabledSwitch((CheckBox)sender, DateFilter);
+        }
+
+        private void FilterByNameCheck_Click(object sender, RoutedEventArgs e)
+        {
+            IsEnabledSwitch((CheckBox)sender, NameFilter);
+        }
+
+        private void FilterBySurNameCheck_Click(object sender, RoutedEventArgs e)
+        {
+            IsEnabledSwitch((CheckBox)sender, SurNameFilter);
+        }
+
+        private void FilterByCityCheck_Click(object sender, RoutedEventArgs e)
+        {
+            IsEnabledSwitch((CheckBox)sender, CityFilter);
+        }
+
+        private void FilterByCountryCheck_Click(object sender, RoutedEventArgs e)
+        {
+            IsEnabledSwitch((CheckBox)sender, CountryFilter);
+        }
+
+        private void FilterByLastNameCheck_Click(object sender, RoutedEventArgs e)
+        {
+            IsEnabledSwitch((CheckBox)sender, DateFilter);
         }
     }
 }

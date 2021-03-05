@@ -23,7 +23,7 @@
                 <DatePicker SelectedDate="{Binding Path=DateOfBirth}" IsDropDownOpen="True" SelectedDateFormat="Short"  />
             </DataTemplate>
         </Grid.Resources>
-        <DataGrid x:Name="PeopleGrid" Margin="10,10,0,10" ItemsSource="{Binding Path=PeopleCollection}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedPeople, Mode=TwoWay}" HorizontalAlignment="Left" Width="425"
+        <DataGrid x:Name="PeopleGrid" Margin="10,10,0,10" ItemsSource="{Binding Path=PeopleCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedPeople, Mode=TwoWay}" HorizontalAlignment="Left" Width="425"
                   CanUserAddRows="False" MouseDoubleClick="PeopleGrid_MouseDoubleClick" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=PeopleId}" Header="Id" Visibility="Visible"/>
@@ -36,7 +36,7 @@
                 <DataGridTextColumn Binding="{Binding Path=Country}" Header="Страна"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="RemovePeople" Margin="440,294,0,0" Command="{Binding Path=RemoveCommand}" CommandParameter="{Binding Path=SelectedPeople}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75">Удалить</Button>
+        <Button x:Name="RemovePeople" Margin="707,294,0,0" Command="{Binding Path=RemoveCommand}" CommandParameter="{Binding Path=SelectedPeople}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75">Удалить</Button>
         <TabControl x:Name="TabControl" Margin="440,10,10,0" Height="279" VerticalAlignment="Top">
             <TabItem Header="Добавление">
                 <Grid Background="#FFE5E5E5">
@@ -77,14 +77,29 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Фильтрация"/>
+            <TabItem Header="Фильтрация" Margin="-2,-2,-15,0">
+                <Grid Background="#FFE5E5E5">
+                    <CheckBox x:Name="FilterByDateCheck" Content="По дате рождения:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="FilterByDateSwitch"/>
+                    <DatePicker x:Name="DateFilter" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding DateOfBirthFilter}"/>
+                    <CheckBox x:Name="FilterByNameCheck" Content="По имени:" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Click="FilterByNameCheck_Click"/>
+                    <TextBox x:Name="NameFilter" HorizontalAlignment="Left" Height="24" Margin="10,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding NameFilter}"/>
+                    <CheckBox x:Name="FilterByLastNameCheck" Content="По фамилии:" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Click="FilterByLastNameCheck_Click"/>
+                    <TextBox x:Name="LastNameFilter" HorizontalAlignment="Left" Height="24" Margin="10,128,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding LastNameFilter}"/>
+                    <CheckBox x:Name="FilterBySurNameCheck" Content="По отчеству:" HorizontalAlignment="Left" Margin="10,155,0,0" VerticalAlignment="Top" Click="FilterBySurNameCheck_Click"/>
+                    <TextBox x:Name="SurNameFilter" HorizontalAlignment="Left" Height="24" Margin="10,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding SurNameFilter}"/>
+                    <CheckBox x:Name="FilterByCityCheck" Content="По городу:" HorizontalAlignment="Left" Margin="171,10,0,0" VerticalAlignment="Top" Click="FilterByCityCheck_Click"/>
+                    <TextBox x:Name="CityFilter" HorizontalAlignment="Left" Height="24" Margin="171,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding CityFilter}"/>
+                    <CheckBox x:Name="FilterByCountryCheck" Content="По стране:" HorizontalAlignment="Left" Margin="171,59,0,0" VerticalAlignment="Top" Click="FilterByCountryCheck_Click"/>
+                    <TextBox x:Name="CountryFilter" HorizontalAlignment="Left" Height="24" Margin="171,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding CountryFilter}"/>
+                    <Button x:Name="FilterButton" Content="Фильтрация" HorizontalAlignment="Left" Margin="10,203,0,0" VerticalAlignment="Top" Width="316" Command="{Binding FilterCommand}"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="Импорт/Экспорт" Margin="-2,-2,-2,0">
                 <Grid Background="#FFE5E5E5">
                     <Button HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=ImportCommand}" Content="Импорт CSV"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <TextBox Margin="520,294,0,0" TextWrapping="Wrap" Text="{Binding SelectedPeople.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="155"/>
-        <Button HorizontalAlignment="Left" Margin="680,294,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=SaveCommand}">Сохранить изменения</Button>
+        <Button x:Name="LoadDB" Content="Load" HorizontalAlignment="Left" Margin="440,294,0,0" VerticalAlignment="Top" Width="75" Command="{Binding Path=LoadCommand}"/>
     </Grid>
 </Window>

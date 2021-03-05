@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using WpfTask1.Interfaces;
 using WpfTask1.Models;
+using WpfTask1.Services;
 
 namespace WpfTask1.DataHandlers
 {

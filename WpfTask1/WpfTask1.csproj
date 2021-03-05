@@ -142,11 +142,13 @@
     <Compile Include="Repositories\PeopleRepository.cs" />
     <Compile Include="DataHandlers\ExcelPeopleExporter.cs" />
     <Compile Include="DataHandlers\JsonPeopleSerializer.cs" />
-    <Compile Include="DelegeteCommand.cs" />
+    <Compile Include="DelegateCommand.cs" />
     <Compile Include="Interfaces\ICsvImporter.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IExcelExporter.cs" />
     <Compile Include="Interfaces\IJsonSerializer.cs" />
+    <Compile Include="Services\Filter.cs" />
+    <Compile Include="Services\FilterDTO.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

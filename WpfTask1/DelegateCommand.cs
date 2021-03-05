@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace WpfTask1
 {
-    class DelegeteCommand : ICommand
+    class DelegateCommand : ICommand
     {
         private Action<object> _execute;
         private Func<object, bool> _canExecute;
@@ -28,8 +28,8 @@ namespace WpfTask1
             if (_execute != null)
                 _execute(parameter);
         }
-        public DelegeteCommand(Action<object> executeAction): this(executeAction, null) {}
-        public DelegeteCommand(Action<object> executeAction, Func<object,bool> canExecuteFunc)
+        public DelegateCommand(Action<object> executeAction): this(executeAction, null) {}
+        public DelegateCommand(Action<object> executeAction, Func<object,bool> canExecuteFunc)
         {
             _canExecute = canExecuteFunc;
             _execute = executeAction;
