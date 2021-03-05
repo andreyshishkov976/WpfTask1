@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 
 namespace WpfTask1.Models
 {
-    class PeopleDBContext: DbContext
+    class PeopleDBContext : DbContext
     {
         public PeopleDBContext() : base("DefaultConnection")
         {

@@ -78,7 +78,7 @@ namespace WpfTask1.Views
 
         private void FilterByLastNameCheck_Click(object sender, RoutedEventArgs e)
         {
-            IsEnabledSwitch((CheckBox)sender, DateFilter);
+            IsEnabledSwitch((CheckBox)sender, LastNameFilter);
         }
     }
 }

@@ -139,14 +139,23 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataHandlers\CsvPeopleImporter.cs" />
+    <Compile Include="Specifications\AndSpecification.cs" />
+    <Compile Include="Specifications\FindByDateSpecification.cs" />
+    <Compile Include="Specifications\FindByCountrySpecification.cs" />
+    <Compile Include="Specifications\FindByCitySpecification.cs" />
+    <Compile Include="Specifications\FindBySurNameSpecification.cs" />
+    <Compile Include="Specifications\FindByLastNameSpecification.cs" />
+    <Compile Include="Specifications\FindByNameSpecification.cs" />
+    <Compile Include="Specifications\ISpecification.cs" />
     <Compile Include="Repositories\PeopleRepository.cs" />
     <Compile Include="DataHandlers\ExcelPeopleExporter.cs" />
     <Compile Include="DataHandlers\JsonPeopleSerializer.cs" />
-    <Compile Include="DelegateCommand.cs" />
-    <Compile Include="Interfaces\ICsvImporter.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IExcelExporter.cs" />
-    <Compile Include="Interfaces\IJsonSerializer.cs" />
+    <Compile Include="Specifications\Specification.cs" />
+    <Compile Include="ViewModels\DelegateCommand.cs" />
+    <Compile Include="DataHandlers\ICsvImporter.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="DataHandlers\IExcelExporter.cs" />
+    <Compile Include="DataHandlers\IJsonSerializer.cs" />
     <Compile Include="Services\Filter.cs" />
     <Compile Include="Services\FilterDTO.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -184,7 +193,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>

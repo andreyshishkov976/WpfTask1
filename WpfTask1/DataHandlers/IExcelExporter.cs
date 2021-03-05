@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WpfTask1.Models;
 
-namespace WpfTask1.Interfaces
+namespace WpfTask1.DataHandlers
 {
     interface IExcelExporter<T> where T : class
     {

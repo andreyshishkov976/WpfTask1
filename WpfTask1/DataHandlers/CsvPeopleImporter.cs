@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using WpfTask1.Interfaces;
 using WpfTask1.Models;
 
 namespace WpfTask1.DataHandlers

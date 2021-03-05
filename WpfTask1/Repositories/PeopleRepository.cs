@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using WpfTask1.Interfaces;
+using System.Linq;
+using System.Linq.Expressions;
 using WpfTask1.Models;
-using WpfTask1.Services;
+using WpfTask1.Specifications;
 
-namespace WpfTask1.DataHandlers
+namespace WpfTask1.Repositories
 {
     class PeopleRepository : IRepository<People>
     {
@@ -20,6 +21,11 @@ namespace WpfTask1.DataHandlers
         public ICollection<People> GetObjectsList()
         {
             return db.People.Local;
+        }
+
+        public ICollection<People> GetObjectsList(string FilterParam)
+        {
+            return db.People.Local.Where(item => item.Name == FilterParam).ToList();
         }
 
         public People GetObject(int id)
@@ -66,5 +72,11 @@ namespace WpfTask1.DataHandlers
         {
             await db.SaveChangesAsync();
         }
+        public ICollection<People> Find(Specification<People> specification)
+        {
+            var s = specification.ToExpression().ToString();
+            return db.People.Where(specification.ToExpression()).ToList();
+        }
+
     }
 }

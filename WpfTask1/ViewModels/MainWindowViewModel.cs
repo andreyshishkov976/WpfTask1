@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Data;
 using System.Windows.Input;
 using WpfTask1.DataHandlers;
-using WpfTask1.Interfaces;
 using WpfTask1.Models;
-using WpfTask1.Services;
+using WpfTask1.Repositories;
+using WpfTask1.Specifications;
 
 namespace WpfTask1.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        Filter filter;
         //Selected People
         private People _selectedPeople;
         public People SelectedPeople
@@ -43,7 +41,8 @@ namespace WpfTask1.ViewModels
                 OnPropertyChanged("DateOfBirth");
             }
         }
-        public string Name {
+        public string Name
+        {
             get { return _name; }
             set
             {
@@ -51,7 +50,8 @@ namespace WpfTask1.ViewModels
                 OnPropertyChanged("Name");
             }
         }
-        public string LastName {
+        public string LastName
+        {
             get { return _lastName; }
             set
             {
@@ -59,7 +59,8 @@ namespace WpfTask1.ViewModels
                 OnPropertyChanged("LastName");
             }
         }
-        public string SurName {
+        public string SurName
+        {
             get { return _surName; }
             set
             {
@@ -76,7 +77,8 @@ namespace WpfTask1.ViewModels
                 OnPropertyChanged("City");
             }
         }
-        public string Country {
+        public string Country
+        {
             get { return _country; }
             set
             {
@@ -86,72 +88,81 @@ namespace WpfTask1.ViewModels
         }
         //Added People
 
-        ////Filter People
-        //private string _dateOfBirthFilter;
-        //private string _nameFilter;
-        //private string _lastNameFilter;
-        //private string _surNameFilter;
-        //private string _cityFilter;
-        //private string _countryFilter;
-        //public string DateOfBirthFilter
-        //{
-        //    get { return _dateOfBirthFilter; }
-        //    set
-        //    {
-        //        _dateOfBirthFilter = value;
-        //        OnPropertyChanged("DateOfBirthFilter");
-        //    }
-        //}
-        //public string NameFilter
-        //{
-        //    get { return _nameFilter; }
-        //    set
-        //    {
-        //        _nameFilter = value;
-        //        OnPropertyChanged("NameFilter");
-        //    }
-        //}
-        //public string LastNameFilter
-        //{
-        //    get { return _lastNameFilter; }
-        //    set
-        //    {
-        //        _lastNameFilter = value;
-        //        OnPropertyChanged("LastNameFilter");
-        //    }
-        //}
-        //public string SurNameFilter
-        //{
-        //    get { return _surNameFilter; }
-        //    set
-        //    {
-        //        _surNameFilter = value;
-        //        OnPropertyChanged("SurNameFilter");
-        //    }
-        //}
-        //public string CityFilter
-        //{
-        //    get { return _cityFilter; }
-        //    set
-        //    {
-        //        _cityFilter = value;
-        //        OnPropertyChanged("CityFilter");
-        //    }
-        //}
-        //public string CountryFilter
-        //{
-        //    get { return _countryFilter; }
-        //    set
-        //    {
-        //        _countryFilter = value;
-        //        OnPropertyChanged("CountryFilter");
-        //    }
-        //}
-        ////Filter People
+        //Filter People
+        private string _dateOfBirthFilter;
+        private string _nameFilter;
+        private string _lastNameFilter;
+        private string _surNameFilter;
+        private string _cityFilter;
+        private string _countryFilter;
+        public string DateOfBirthFilter
+        {
+            get { return _dateOfBirthFilter; }
+            set
+            {
+                _dateOfBirthFilter = value;
+                OnPropertyChanged("DateOfBirthFilter");
+            }
+        }
+        public string NameFilter
+        {
+            get { return _nameFilter; }
+            set
+            {
+                _nameFilter = value;
+                OnPropertyChanged("NameFilter");
+            }
+        }
+        public string LastNameFilter
+        {
+            get { return _lastNameFilter; }
+            set
+            {
+                _lastNameFilter = value;
+                OnPropertyChanged("LastNameFilter");
+            }
+        }
+        public string SurNameFilter
+        {
+            get { return _surNameFilter; }
+            set
+            {
+                _surNameFilter = value;
+                OnPropertyChanged("SurNameFilter");
+            }
+        }
+        public string CityFilter
+        {
+            get { return _cityFilter; }
+            set
+            {
+                _cityFilter = value;
+                OnPropertyChanged("CityFilter");
+            }
+        }
+        public string CountryFilter
+        {
+            get { return _countryFilter; }
+            set
+            {
+                _countryFilter = value;
+                OnPropertyChanged("CountryFilter");
+            }
+        }
+        //Filter People
 
         private IRepository<People> _peopleRepository;
         private ICsvImporter<People> _csvFileHandler;
-        public ICollection<People> PeopleCollection { get; set; }
+        private ICollection<People> _peopleCollection;
+        public ICollection<People> PeopleCollection
+        {
+            get { return _peopleCollection; }
+            set
+            {
+                _peopleCollection = value;
+                OnPropertyChanged("PeopleCollection");
+            }
+        }
 
         //Commands
         public ICommand LoadCommand { get; private set; }
@@ -159,7 +170,7 @@ namespace WpfTask1.ViewModels
         public ICommand ImportCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
         public ICommand UpdateCommand { get; private set; }
-        //public ICommand FilterCommand { get; private set; }
+        public ICommand FilterCommand { get; private set; }
         //Commands
 
         public MainWindowViewModel()
@@ -173,8 +184,7 @@ namespace WpfTask1.ViewModels
             RemoveCommand = new DelegateCommand(RemovePeople, CanRemovePeople);
             UpdateCommand = new DelegateCommand(UpdatePeople);
             ImportCommand = new DelegateCommand(ImportCSV);
-            //FilterCommand = new DelegateCommand(FilterData);
-            //filter = new Filter();
+            FilterCommand = new DelegateCommand(FilterData);
         }
 
         private void LoadDB(object obj)
@@ -184,7 +194,10 @@ namespace WpfTask1.ViewModels
 
         private void FilterData(object obj)
         {
-
+            FindByNameSpecification findByName = new FindByNameSpecification(NameFilter);
+            FindByLastNameSpecification findByLastName = new FindByLastNameSpecification(LastNameFilter);
+            FindBySurNameSpecification findBySurName = new FindBySurNameSpecification(SurNameFilter);
+            PeopleCollection = _peopleRepository.Find(findByName.And(findByLastName).And(findBySurName));
         }
 
         private bool CanRemovePeople(object arg)
