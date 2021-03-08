@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using WpfTask1.DataHandlers;
 using WpfTask1.Models;
@@ -95,7 +97,7 @@ namespace WpfTask1.ViewModels
         private string _surNameFilter;
         private string _cityFilter;
         private string _countryFilter;
-        public string DateOfBirthFilter
+        public string DateFilter
         {
             get { return _dateOfBirthFilter; }
             set
@@ -194,10 +196,46 @@ namespace WpfTask1.ViewModels
 
         private void FilterData(object obj)
         {
-            FindByNameSpecification findByName = new FindByNameSpecification(NameFilter);
-            FindByLastNameSpecification findByLastName = new FindByLastNameSpecification(LastNameFilter);
-            FindBySurNameSpecification findBySurName = new FindBySurNameSpecification(SurNameFilter);
-            PeopleCollection = _peopleRepository.Find(findByName.And(findByLastName).And(findBySurName));
+            Window mainWindow = (Window)obj;
+            List<Specification<People>> SpecList = new List<Specification<People>>();
+            CheckBox DateCheck = (CheckBox)mainWindow.FindName("FilterByDateCheck");
+            CheckBox NameCheck = (CheckBox)mainWindow.FindName("FilterByNameCheck");
+            CheckBox LNameCheck = (CheckBox)mainWindow.FindName("FilterByLastNameCheck");
+            CheckBox SNameCheck = (CheckBox)mainWindow.FindName("FilterBySurNameCheck");
+            CheckBox CityCheck = (CheckBox)mainWindow.FindName("FilterByCityCheck");
+            CheckBox CountryCheck = (CheckBox)mainWindow.FindName("FilterByCountryCheck");
+            //Specification<People> filterSpec;
+            if (DateCheck.IsChecked == true)
+            {
+                SpecList.Add(new FindByDateSpecification(DateTime.Parse(DateFilter)));
+            }
+            if (NameCheck.IsChecked == true && NameFilter.Length != 0 && NameFilter.Replace(" ","").Length != 0)
+            {
+                SpecList.Add(new FindByNameSpecification(NameFilter));
+            }
+            if (LNameCheck.IsChecked == true && LastNameFilter.Length != 0 && LastNameFilter.Replace(" ", "").Length != 0)
+            {
+                SpecList.Add(new FindByLastNameSpecification(LastNameFilter));
+            }
+            if (SNameCheck.IsChecked == true && SurNameFilter.Length != 0 && SurNameFilter.Replace(" ", "").Length != 0)
+            {
+                SpecList.Add(new FindBySurNameSpecification(SurNameFilter));
+            }
+            if (CityCheck.IsChecked == true && CityFilter.Length != 0 && CityFilter.Replace(" ", "").Length != 0)
+            {
+                SpecList.Add(new FindByCitySpecification(CityFilter));
+            }
+            if (CountryCheck.IsChecked == true && CountryFilter.Length != 0 && CountryFilter.Replace(" ", "").Length != 0)
+            {
+                SpecList.Add(new FindByNameSpecification(CountryFilter));
+            }
+            Specification<People> specification = SpecList[0];
+            SpecList.RemoveAt(0);
+            foreach (var spec in SpecList)
+            {
+                specification.And(spec);
+            }
+            PeopleCollection = _peopleRepository.Find(specification);
         }
 
         private bool CanRemovePeople(object arg)
