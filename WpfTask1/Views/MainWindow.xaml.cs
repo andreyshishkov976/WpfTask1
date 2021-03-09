@@ -80,5 +80,20 @@ namespace WpfTask1.Views
         {
             IsEnabledSwitch((CheckBox)sender, LastNameFilter);
         }
+
+        private void DateTimePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ClearBorderColor(sender as Control);
+        }
+
+        private void ClearBorderColor(Control control)
+        {
+            control.ClearValue(Border.BorderBrushProperty);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ClearBorderColor(sender as Control);
+        }
     }
 }
