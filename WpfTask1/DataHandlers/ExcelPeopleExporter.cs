@@ -10,6 +10,7 @@ namespace WpfTask1.DataHandlers
     class ExcelPeopleExporter : IExcelExporter<People>
     {
         private SaveFileDialog _saveFileDialog;
+        private bool _dialogResult;
         public ExcelPeopleExporter()
         {
             _saveFileDialog = new SaveFileDialog();
@@ -18,21 +19,16 @@ namespace WpfTask1.DataHandlers
             _saveFileDialog.CheckPathExists = true;
         }
 
-
-
-        public void ExcelExport(ICollection<People> items)
+        public void ExcelExport(ICollection<People> items, string filePath)
         {
-            if (_saveFileDialog.ShowDialog() == true)
+            try
             {
-                try
-                {
-                    ExcelMapper mapper = new ExcelMapper();
-                    mapper.SaveAsync(_saveFileDialog.FileName, items, "ExportedData", true);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                ExcelMapper mapper = new ExcelMapper();
+                mapper.SaveAsync(filePath, items, "ExportedData", true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Что-то пошло не так: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -19,7 +19,6 @@ namespace WpfTask1.Views
 
         private void AddPeople1_Click(object sender, RoutedEventArgs e)
         {
-            //PeopleGrid.SelectedItem = null;
         }
 
         private void PeopleGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -29,13 +28,6 @@ namespace WpfTask1.Views
 
         private void AddPeople_Click(object sender, RoutedEventArgs e)
         {
-            //AddDateOfBirth.SelectedDate = DateTime.Now;
-            //AddDateOfBirth.Text = string.Empty;
-            //AddName.Text = string.Empty;
-            //AddLastName.Text = string.Empty;
-            //AddSurName.Text = string.Empty;
-            //AddCity.Text = string.Empty;
-            //AddCountry.Text = string.Empty;
         }
 
         private void IsEnabledSwitch(CheckBox sender, Control target)
@@ -47,6 +39,8 @@ namespace WpfTask1.Views
                     break;
                 default:
                     target.IsEnabled = false;
+                    target.ClearValue(DatePicker.TextProperty);
+                    target.ClearValue(TextBox.TextProperty);
                     break;
             }
         }
@@ -83,17 +77,19 @@ namespace WpfTask1.Views
 
         private void DateTimePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            ClearBorderColor(sender as Control);
+            Control control = sender as Control;
+            control.ClearValue(Border.BorderBrushProperty);
         }
-
-        private void ClearBorderColor(Control control)
+        
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            Control control = sender as Control;
             control.ClearValue(Border.BorderBrushProperty);
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ClearBorderColor(sender as Control);
+            
         }
     }
 }

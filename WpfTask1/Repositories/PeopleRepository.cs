@@ -13,10 +13,14 @@ namespace WpfTask1.Repositories
         public PeopleRepository()
         {
             db = new PeopleDBContext();
-            db.People.LoadAsync();
         }
 
         internal PeopleDBContext db { get; set; }
+
+        public async void LoadDB()
+        {
+            await db.People.LoadAsync();
+        }
 
         public ICollection<People> GetObjectsList()
         {

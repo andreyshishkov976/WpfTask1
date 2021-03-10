@@ -7,6 +7,7 @@ namespace WpfTask1.Repositories
     interface IRepository<T> : IDisposable
         where T : class
     {
+        void LoadDB();
         ICollection<T> GetObjectsList();
         ICollection<T> Find(Specification<T> specification);
         T GetObject(int id);
