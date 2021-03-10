@@ -156,8 +156,6 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="DataHandlers\IExcelExporter.cs" />
     <Compile Include="DataHandlers\IJsonSerializer.cs" />
-    <Compile Include="Services\Filter.cs" />
-    <Compile Include="Services\FilterDTO.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -193,9 +191,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
