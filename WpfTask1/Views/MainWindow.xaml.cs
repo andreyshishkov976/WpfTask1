@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using WpfTask1.ViewModels;
 
 namespace WpfTask1.Views
@@ -19,6 +17,7 @@ namespace WpfTask1.Views
 
         private void AddPeople1_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void PeopleGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -80,7 +79,7 @@ namespace WpfTask1.Views
             Control control = sender as Control;
             control.ClearValue(Border.BorderBrushProperty);
         }
-        
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Control control = sender as Control;
@@ -89,7 +88,7 @@ namespace WpfTask1.Views
 
         private void IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            
+
         }
     }
 }

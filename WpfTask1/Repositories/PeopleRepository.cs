@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
 using WpfTask1.Models;
 using WpfTask1.Specifications;
 
@@ -17,19 +17,14 @@ namespace WpfTask1.Repositories
 
         internal PeopleDBContext db { get; set; }
 
-        public async void LoadDB()
+        public async Task LoadDB()
         {
             await db.People.LoadAsync();
         }
 
-        public ICollection<People> GetObjectsList()
+        public async Task<ICollection<People>> GetObjectsList()
         {
-            return db.People.Local;
-        }
-
-        public ICollection<People> GetObjectsList(string FilterParam)
-        {
-            return db.People.Local.Where(item => item.Name == FilterParam).ToList();
+            return await db.People.ToListAsync();
         }
 
         public People GetObject(int id)
@@ -37,20 +32,46 @@ namespace WpfTask1.Repositories
             return db.People.Find(id);
         }
 
-        public void CreateObject(People item)
+        public async Task<ICollection<People>> CreateObject(People item)
         {
             db.People.Add(item);
+            await db.SaveChangesAsync();
+            return await db.People.ToListAsync();
         }
-
-        public void DeleteObject(People item)
+        public async Task<ICollection<People>> CreateRange(ICollection<People> range)
         {
-            if (db.People.Find(item.PeopleId) != null)
-                db.People.Remove(item);
+            db.People.AddRange(range);
+            await db.SaveChangesAsync();
+            return await db.People.ToListAsync();
         }
 
-        public void UpdateObject(People item)
+        public async Task<ICollection<People>> DeleteObject(People item)
+        {
+            bool oldValidateOnSaveEnabled = db.Configuration.ValidateOnSaveEnabled;
+            try
+            {
+                db.Configuration.ValidateOnSaveEnabled = false;
+                var people = new People { PeopleId = item.PeopleId };
+                db.People.Attach(people);
+                db.Entry(people).State = EntityState.Deleted;
+                await db.SaveChangesAsync();
+            }
+            finally
+            {
+                db.Configuration.ValidateOnSaveEnabled = oldValidateOnSaveEnabled;
+            }
+            return await db.People.ToListAsync();
+            //if (db.People.Find(item.PeopleId) != null)
+            //    db.People.Remove(item);
+            //    //db.Entry(item).State = EntityState.Deleted;
+            //await db.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<People>> UpdateObject(People item)
         {
             db.Entry(item).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return await db.People.ToListAsync();
         }
 
         private bool _disposed = false;
@@ -72,13 +93,13 @@ namespace WpfTask1.Repositories
             GC.SuppressFinalize(this);
         }
 
-        public async void Save()
+        public async Task SaveAsync()
         {
             await db.SaveChangesAsync();
         }
-        public ICollection<People> Find(Specification<People> specification)
+        public async Task<ICollection<People>> Find(Specification<People> specification)
         {
-            return db.People.Where(specification.ToExpression()).ToList();
+            return await db.People.Where(specification.ToExpression()).ToListAsync();
         }
 
     }

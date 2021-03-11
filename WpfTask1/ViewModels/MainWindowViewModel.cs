@@ -21,20 +21,25 @@ namespace WpfTask1.ViewModels
         public MainWindowViewModel()
         {
             PeopleCollection = new ObservableCollection<People>();
-            _peopleRepository = new PeopleRepository();
-            _csvFileHandler = new CSVPeopleImporter();
+            _csvFileHandler = new CsvPeopleImporter();
             _excelExporter = new ExcelPeopleExporter();
             _jsonSerializer = new JsonPeopleSerializer();
+            _openCsvDialog = new OpenFileDialog();
+            _openCsvDialog.Filter = "CSV Files|*.csv;";
+            _openCsvDialog.InitialDirectory = Environment.CurrentDirectory + @"\Import\";
+            _openCsvDialog.CheckPathExists = true;
+            _openCsvDialog.CheckFileExists = true;
             _saveExcelDialog = new SaveFileDialog();
             _saveExcelDialog.Filter = "Excel Files|*.xls;*.xlsx;";
             _saveExcelDialog.InitialDirectory = Environment.CurrentDirectory + @"\Export\";
             _saveExcelDialog.CheckPathExists = true;
+            _saveExcelDialog.CheckFileExists = true;
             _saveJsonDialog = new SaveFileDialog();
             _saveJsonDialog.Filter = "JSON Files|*.json;";
             _saveJsonDialog.InitialDirectory = Environment.CurrentDirectory + @"\Export\";
             _saveJsonDialog.CheckPathExists = true;
-            LoadDB(this);
-            LoadCommand = new DelegateCommand(LoadDB);
+            _saveJsonDialog.CheckFileExists = true;
+            LoadCommand = new DelegateCommand(LoadTable);
             AddCommand = new DelegateCommand(AddPeople);
             RemoveCommand = new DelegateCommand(RemovePeople, CanRemovePeople);
             UpdateCommand = new DelegateCommand(UpdatePeople);
@@ -72,68 +77,68 @@ namespace WpfTask1.ViewModels
         }
 
         #region ADDITION FIELDS
-        private string _dateOfBirth;
-        private string _name;
-        private string _lastName;
-        private string _surName;
-        private string _city;
-        private string _country;
+        private string _addDateOfBirth;
+        private string _addName;
+        private string _addLastName;
+        private string _addSurName;
+        private string _addCity;
+        private string _addCountry;
         public string AddDateOfBirth
         {
-            get { return _dateOfBirth; }
+            get { return _addDateOfBirth; }
             set
             {
-                _dateOfBirth = value;
-                OnPropertyChanged("DateOfBirth");
+                _addDateOfBirth = value;
+                OnPropertyChanged("AddDateOfBirth");
             }
         }
         public string AddName
         {
-            get { return _name; }
+            get { return _addName; }
             set
             {
-                _name = value;
-                OnPropertyChanged("Name");
+                _addName = value;
+                OnPropertyChanged("AddName");
             }
         }
         public string AddLastName
         {
-            get { return _lastName; }
+            get { return _addLastName; }
             set
             {
-                _lastName = value;
-                OnPropertyChanged("LastName");
+                _addLastName = value;
+                OnPropertyChanged("AddLastName");
             }
         }
         public string AddSurName
         {
-            get { return _surName; }
+            get { return _addSurName; }
             set
             {
-                _surName = value;
-                OnPropertyChanged("SurName");
+                _addSurName = value;
+                OnPropertyChanged("AddSurName");
             }
         }
         public string AddCity
         {
-            get { return _city; }
+            get { return _addCity; }
             set
             {
-                _city = value;
-                OnPropertyChanged("City");
+                _addCity = value;
+                OnPropertyChanged("AddCity");
             }
         }
         public string AddCountry
         {
-            get { return _country; }
+            get { return _addCountry; }
             set
             {
-                _country = value;
-                OnPropertyChanged("Country");
+                _addCountry = value;
+                OnPropertyChanged("AddCountry");
             }
         }
         #endregion
-        
+
         #region FILTER FIELDS
         private string _dateFilter;
         private string _nameFilter;
@@ -196,9 +201,8 @@ namespace WpfTask1.ViewModels
             }
         }
         #endregion
-        
+
         #region INTERFACES
-        private IRepository<People> _peopleRepository;
         private ICsvImporter<People> _csvFileHandler;
         private IExcelExporter<People> _excelExporter;
         private IJsonSerializer<People> _jsonSerializer;
@@ -218,12 +222,12 @@ namespace WpfTask1.ViewModels
         #endregion
 
         #region DATABASE OPERATIONS
-        private void LoadDB(object obj)
+        private async void LoadTable(object obj)
         {
-            _peopleRepository.LoadDB();
-            PeopleCollection = _peopleRepository.GetObjectsList();
+            using (IRepository<People> Repository = new PeopleRepository())
+                PeopleCollection = await Repository.GetObjectsList();
         }
-        private void AddPeople(object obj)
+        private async void AddPeople(object obj)
         {
             if (AddDateOfBirth == null || AddDateOfBirth.Replace(" ", "").Length == 0)
                 EmptyFieldMessage(obj as Window, "AddDateOfBirth");
@@ -239,17 +243,17 @@ namespace WpfTask1.ViewModels
                 EmptyFieldMessage(obj as Window, "AddCoutry");
             else
             {
-                _peopleRepository.CreateObject(new People(DateTime.Parse(AddDateOfBirth).Date, AddName, AddLastName, AddSurName, AddCity, AddCountry));
-                _peopleRepository.Save();
+                using (IRepository<People> Repository = new PeopleRepository())
+                    PeopleCollection = await Repository.CreateObject(new People(DateTime.Parse(AddDateOfBirth).Date, AddName, AddLastName, AddSurName, AddCity, AddCountry));
                 ClearAddedPeople();
             }
         }
-        private void RemovePeople(object obj)
+        private async void RemovePeople(object obj)
         {
-            _peopleRepository.DeleteObject((People)obj);
-            _peopleRepository.Save();
+            using (IRepository<People> Repository = new PeopleRepository())
+                PeopleCollection = await Repository.DeleteObject((People)obj);
         }
-        private void UpdatePeople(object obj)
+        private async void UpdatePeople(object obj)
         {
             if (SelectedPeople.DateOfBirth == null)
                 EmptyFieldMessage(obj as Window, "EditDateOfBirth");
@@ -265,12 +269,12 @@ namespace WpfTask1.ViewModels
                 EmptyFieldMessage(obj as Window, "EditCoutry");
             else
             {
-                _peopleRepository.UpdateObject(SelectedPeople);
+                using (IRepository<People> Repository = new PeopleRepository())
+                    PeopleCollection = await Repository.UpdateObject(SelectedPeople);
                 SelectedPeople = null;
-                _peopleRepository.Save();
             }
         }
-        private void FilterData(object obj)
+        private async void FilterData(object obj)
         {
             Window mainWindow = (Window)obj;
             List<Specification<People>> SpecList = new List<Specification<People>>();
@@ -319,10 +323,12 @@ namespace WpfTask1.ViewModels
                 {
                     specification.And(spec);
                 }
-                PeopleCollection = _peopleRepository.Find(specification);
+                using (IRepository<People> Repository = new PeopleRepository())
+                    PeopleCollection = await Repository.Find(specification);
             }
             else
-                LoadDB(obj);
+                using (IRepository<People> Repository = new PeopleRepository())
+                    PeopleCollection = await Repository.GetObjectsList();
         }
         private void ClearAddedPeople()
         {
@@ -343,6 +349,11 @@ namespace WpfTask1.ViewModels
             block.BorderBrush = Brushes.Red;
             MessageBox.Show("Одно из полей не было заполнено. Результат не будет сохранен.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        #endregion
+
+        #region IMPORT PARAMETERS
+        private OpenFileDialog _openCsvDialog;
+        private string _csvFileName;
         #endregion
 
         #region EXPORT PARAMETERS
@@ -373,12 +384,15 @@ namespace WpfTask1.ViewModels
         #region IMPORT/EXPORT
         private async void ImportCSV(object obj)
         {
-            var range = await _csvFileHandler.DataLoaderAsync(Environment.CurrentDirectory + @"\Import\persons.csv");
-            foreach (var item in range)
+            ICollection<People> range = null;
+            if (_openCsvDialog.ShowDialog() == true)
+                range = await _csvFileHandler.DataLoaderAsync(_openCsvDialog.FileName);
+            using (IRepository<People> Repository = new PeopleRepository())
             {
-                _peopleRepository.CreateObject(item);
+                await Repository.CreateRange(range);
+                if (MessageBox.Show("Импорт завершен. Отобразить импортированные записи сейчас?", "Вопрос", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    PeopleCollection = await Repository.GetObjectsList();
             }
-            _peopleRepository.Save();
         }
         private void ShowSaveExcelDialog(object obj)
         {

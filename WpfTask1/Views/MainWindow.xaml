@@ -7,28 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="356" Width="800" x:Name="Main">
     <Grid Margin="0,0,0,1">
-        <Grid.Resources>
-            <DataTemplate x:Key="DateTemplate" >
-                <!--<StackPanel Width="50" Height="30">
-                    <Border Background="LightBlue" BorderBrush="Black" BorderThickness="1">
-                        <TextBlock Text="{Binding Path=DateOfBirth, StringFormat={}{0:MMM}}" FontSize="8" HorizontalAlignment="Center" />
-                    </Border>
-                    <Border Background="White" BorderBrush="Black" BorderThickness="1">
-                        <TextBlock Text="{Binding Path=DateOfBirth, StringFormat={}{0:yyyy}}" FontSize="8" FontWeight="Bold" HorizontalAlignment="Center" />
-                    </Border>
-                </StackPanel>-->
-                <DatePicker SelectedDate="{Binding Path=DateOfBirth}" IsDropDownOpen="False" SelectedDateFormat="Short"  />
-            </DataTemplate>
-            <DataTemplate x:Key="EditingDateTemplate">
-                <DatePicker SelectedDate="{Binding Path=DateOfBirth}" IsDropDownOpen="True" SelectedDateFormat="Short"  />
-            </DataTemplate>
-        </Grid.Resources>
         <DataGrid x:Name="PeopleGrid" Margin="10,10,0,10" ItemsSource="{Binding Path=PeopleCollection}" AutoGenerateColumns="False" SelectedItem="{Binding Path=SelectedPeople, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Width="425"
                   CanUserAddRows="False" MouseDoubleClick="PeopleGrid_MouseDoubleClick" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=PeopleId}" Header="Id" Visibility="Visible"/>
-                <!--<DataGridTemplateColumn Header="Дата рождения" CellTemplate="{StaticResource DateTemplate}" CellEditingTemplate="{StaticResource EditingDateTemplate}"/>-->
-                <DataGridTextColumn Binding="{Binding Path=DateOfBirth, StringFormat=d}" Header="Дата рождения"/>
+                <DataGridTextColumn Binding="{Binding Path=DateOfBirth, StringFormat=d, ConverterCulture=ru-RU}" Header="Дата рождения"/>
                 <DataGridTextColumn Binding="{Binding Path=Name}" Header="Имя"/>
                 <DataGridTextColumn Binding="{Binding Path=LastName}" Header="Фамилия"/>
                 <DataGridTextColumn Binding="{Binding Path=SurName}" Header="Отчество"/>
@@ -43,44 +26,44 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="AddPeople" Margin="10,179,7,32" Command="{Binding Path=AddCommand}" CommandParameter="{Binding ElementName=Main}" Content="Добавить" Click="AddPeople_Click"/>
-                    <TextBox x:Name="AddName" Text="{Binding Path=AddName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,37,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
-                    <TextBox x:Name="AddLastName" Text="{Binding Path=AddLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,65,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
-                    <TextBox x:Name="AddSurName" Text="{Binding Path=AddSurName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,93,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
-                    <DatePicker x:Name="AddDateOfBirth" Text="{Binding Path=AddDateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="112,9,7,0" VerticalAlignment="Top" SelectedDateChanged="DateTimePicker_SelectedDateChanged"/>
                     <Label Content="Дата рождения:" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
+                    <DatePicker x:Name="AddDateOfBirth" Text="{Binding Path=AddDateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="112,9,7,0" VerticalAlignment="Top" SelectedDateChanged="DateTimePicker_SelectedDateChanged" SelectedDateFormat="Long"/>
                     <Label Content="Имя:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="AddName" Text="{Binding Path=AddName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,37,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
                     <Label Content="Фамилия:" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="AddLastName" Text="{Binding Path=AddLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,65,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
                     <Label Content="Отчество:" HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="AddSurName" Text="{Binding Path=AddSurName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,93,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
                     <Label Content="Город:" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top"/>
-                    <Label Content="Страна:" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="AddCity" Text="{Binding Path=AddCity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,121,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
+                    <Label Content="Страна:" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top"/>
                     <TextBox x:Name="AddCountry" Text="{Binding Path=AddCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,149,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
+                    <Button x:Name="AddPeople" Margin="10,179,7,32" Command="{Binding Path=AddCommand}" CommandParameter="{Binding ElementName=Main}" Content="Добавить" Click="AddPeople_Click"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="EditTab" Header="Редактирование">
                 <Grid Background="#FFE5E5E5">
                     <Grid Background="#FFE5E5E5">
-                        <Button x:Name="SaveChanges" Margin="10,179,7,32" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=Main}" Content="Сохранить изменения"/>
-                        <TextBox x:Name="EditName" Text="{Binding Path=SelectedPeople.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,37,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
-                        <TextBox x:Name="EditLastName" Text="{Binding Path=SelectedPeople.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,65,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
-                        <TextBox x:Name="EditSurName" Text="{Binding Path=SelectedPeople.SurName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,93,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
-                        <DatePicker x:Name="EditDateOfBirth" SelectedDate="{Binding Path=SelectedPeople.DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="112,9,7,0" VerticalAlignment="Top" SelectedDateChanged="DateTimePicker_SelectedDateChanged"/>
                         <Label Content="Дата рождения:" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
+                        <DatePicker x:Name="EditDateOfBirth" SelectedDate="{Binding Path=SelectedPeople.DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="112,9,7,0" VerticalAlignment="Top" SelectedDateChanged="DateTimePicker_SelectedDateChanged" SelectedDateFormat="Long"/>
+                        <TextBox x:Name="EditName" Text="{Binding Path=SelectedPeople.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,37,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
                         <Label Content="Имя:" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="EditLastName" Text="{Binding Path=SelectedPeople.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,65,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
                         <Label Content="Фамилия:" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="EditSurName" Text="{Binding Path=SelectedPeople.SurName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,93,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
                         <Label Content="Отчество:" HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top"/>
-                        <Label Content="Город:" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top"/>
-                        <Label Content="Страна:" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top"/>
                         <TextBox x:Name="EditCity" Text="{Binding Path=SelectedPeople.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,121,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
+                        <Label Content="Город:" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top"/>
                         <TextBox x:Name="EditCountry" Text="{Binding Path=SelectedPeople.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="112,149,7,0" TextWrapping="NoWrap" VerticalAlignment="Top" TextChanged="TextBox_TextChanged"/>
+                        <Label Content="Страна:" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top"/>
+                        <Button x:Name="SaveChanges" Margin="10,179,7,32" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=Main}" Content="Сохранить изменения"/>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem x:Name="FilterTab" Header="Фильтрация" Margin="-2,-2,-15,0">
                 <Grid Background="#FFE5E5E5">
                     <CheckBox x:Name="FilterByDateCheck" Content="По дате рождения:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="FilterByDateSwitch"/>
-                    <DatePicker x:Name="DateFilter" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding Path=DateFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateChanged="DateTimePicker_SelectedDateChanged" IsEnabledChanged="IsEnabledChanged"/>
+                    <DatePicker x:Name="DateFilter" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding Path=DateFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedDateChanged="DateTimePicker_SelectedDateChanged" IsEnabledChanged="IsEnabledChanged" SelectedDateFormat="Long"/>
                     <CheckBox x:Name="FilterByNameCheck" Content="По имени:" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Click="FilterByNameCheck_Click"/>
                     <TextBox x:Name="NameFilter" HorizontalAlignment="Left" Height="24" Margin="10,79,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="155" IsEnabled="False" Text="{Binding Path=NameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBox_TextChanged"/>
                     <CheckBox x:Name="FilterByLastNameCheck" Content="По фамилии:" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Click="FilterByLastNameCheck_Click"/>
@@ -97,23 +80,23 @@
             <TabItem x:Name="Im_Export" Header="Импорт/Экспорт" Margin="-2,-2,-2,0">
                 <Grid Background="#FFE5E5E5">
                     <GroupBox Header="Импорт" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="336">
-                        <Button HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="88" Command="{Binding ImportCommand}" Content="из CSV файла"/>
+                        <Button HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="88" Command="{Binding ImportCommand}" CommandParameter="{Binding ElementName=Main}" Content="из CSV файла"/>
                     </GroupBox>
                     <GroupBox Header="Экспорт" HorizontalAlignment="Left" Height="169" VerticalAlignment="Top" Width="336" Margin="0,62,0,0">
                         <TabControl HorizontalAlignment="Left" Height="138" Margin="0,10,-2,-2" VerticalAlignment="Top" Width="326">
                             <TabItem Header="в книгу Excel">
                                 <Grid Background="#FFE5E5E5">
                                     <Button Content="Обзор" HorizontalAlignment="Left" Margin="235,36,0,0" VerticalAlignment="Top" Width="75" Height="23" Command="{Binding Path=BrowseExcelCommand}"/>
-                                    <TextBox x:Name="ExcelFileName" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="220" Text="{Binding Path=ExcelFileName}"  TextChanged="TextBox_TextChanged"/>
                                     <Label Content="Имя файла:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                                    <TextBox x:Name="ExcelFileName" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="NoWrap"  VerticalAlignment="Top" Width="220" Text="{Binding Path=ExcelFileName}"  TextChanged="TextBox_TextChanged"/>
                                     <Button Content="Сохранить" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="300" Height="23" Command="{Binding Path=ExcelExport}" CommandParameter="{Binding ElementName=Main}"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="в JSON файл">
                                 <Grid Background="#FFE5E5E5">
                                     <Button Content="Обзор" HorizontalAlignment="Left" Margin="235,36,0,0" VerticalAlignment="Top" Width="75" Height="23" Command="{Binding Path=BrowseJsonCommand}"/>
-                                    <TextBox x:Name="JsonFileName" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="220" Text="{Binding Path=JsonFileName}" TextChanged="TextBox_TextChanged"/>
                                     <Label Content="Имя файла:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                                    <TextBox x:Name="JsonFileName" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="220" Text="{Binding Path=JsonFileName}" TextChanged="TextBox_TextChanged"/>
                                     <Button Content="Сохранить" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="300" Height="23" Command="{Binding Path=JsonExport}" CommandParameter="{Binding ElementName=Main}"/>
                                 </Grid>
                             </TabItem>
